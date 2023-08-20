@@ -2,7 +2,7 @@ import prismadb from "@/lib/prismadb";
 import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
-export async function PATCH(
+export async function DELETE(
   req: Request,
   { params }: { params: { storeId: string } }
 ) {
@@ -26,7 +26,7 @@ export async function PATCH(
 
     return NextResponse.json(store);
   } catch (error) {
-    console.log("[STORE_PATCH]", error);
+    console.log("[STORE_DELETE]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }
