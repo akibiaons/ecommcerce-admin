@@ -11,7 +11,7 @@ interface SettingsPageProps {
   };
 }
 
-const SettingsPage: React.FC<SettingsPageProps> = async (params) => {
+const SettingsPage: React.FC<SettingsPageProps> = async ({ params }) => {
   const { userId } = auth();
   //
   if (!userId) {
