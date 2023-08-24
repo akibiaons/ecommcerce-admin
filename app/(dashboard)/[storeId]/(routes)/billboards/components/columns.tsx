@@ -12,15 +12,11 @@ export type BillboardColumn = {
 
 export const columns: ColumnDef<BillboardColumn>[] = [
   {
-    accessorKey: "status",
-    header: "Status",
+    accessorKey: "label",
+    header: "Label",
   },
   {
-    accessorKey: "email",
-    header: "Email",
-  },
-  {
-    accessorKey: "amount",
-    header: "Amount",
+    accessorKey: "createdAt",
+    header: "Date",
   },
 ];
