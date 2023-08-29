@@ -1,10 +1,10 @@
 "use client";
 
 import axios from "axios";
-import { useParams, useRouter } from "next/navigation";
-import { toast } from "react-hot-toast";
 import { useState } from "react";
 import { Copy, Edit, MoreHorizontal, Trash } from "lucide-react";
+import { useParams, useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
 
 // Seperate================================================================
 import { Button } from "@/components/ui/button";
@@ -40,7 +40,7 @@ export const CellAction: React.FC<CellActionProps> = ({ data }) => {
   const onDelete = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/api/${params.stoeId}/colors/${data.id}`);
+      await axios.delete(`/api/${params.storeId}/colors/${data.id}`);
       router.refresh();
       toast.success("Color Deleted");
     } catch (error) {
