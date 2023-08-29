@@ -6,7 +6,7 @@ import { toast } from "react-hot-toast";
 import { useState } from "react";
 import { Copy, Edit, MoreHorizontal, Trash } from "lucide-react";
 
-// Seperate === = = = = =  = = = = = = = =
+// Seperate================================================================
 import { Button } from "@/components/ui/button";
 
 import {
@@ -16,7 +16,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-// Seperate == ===  ==  =
+// Seperate=============================================================
 
 import { SizeColumn } from "./columns";
 import { AlertModal } from "@/components/modals/alert-modal";
