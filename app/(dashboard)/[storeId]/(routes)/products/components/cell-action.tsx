@@ -18,11 +18,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 // Seperate == ===  ==  =
 
-import { BillboardColumn } from "./columns";
+import { ProductColumn } from "./columns"; // This was part of the billboard to product replacement that didn't seem to break the code at all...
 import { AlertModal } from "@/components/modals/alert-modal";
 
 interface CellActionProps {
-  data: BillboardColumn;
+  data: ProductColumn; // Replaced this wil product but it was billboard...
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
