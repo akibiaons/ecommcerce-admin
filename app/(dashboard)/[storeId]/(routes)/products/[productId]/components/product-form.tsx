@@ -2,7 +2,7 @@
 
 import * as z from "zod";
 import axios from "axios";
-import { Billboard } from "@prisma/client";
+import { Product, Image } from "@prisma/client";
 import { Trash } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -26,39 +26,58 @@ import { AlertModal } from "@/components/modals/alert-modal";
 import ImageUpload from "@/components/ui/image-upload";
 
 const formSchema = z.object({
-  label: z.string().min(1),
-  imageUrl: z.string().min(1),
+  name: z.string().min(1),
+  images: z.object({ url: z.string() }).array(),
+  price: z.coerce.number().min(1),
+  categoryId: z.string().min(1),
+  colorId: z.string().min(1),
+  sizeId: z.string().min(1),
+  isFeatured: z.boolean().default(false).optional(),
+  isArchived: z.boolean().default(false).optional(),
 });
 
-type BillboardFormValues = z.infer<typeof formSchema>;
+type ProductFormValues = z.infer<typeof formSchema>;
 
-interface BillboardFormProps {
-  initialData: Billboard | null;
+interface ProductFormProps {
+  initialData:
+    | (Product & {
+        images: Image[];
+      })
+    | null;
 }
 
-export const BillboardForm: React.FC<BillboardFormProps> = ({
-  initialData,
-}) => {
+export const ProductForm: React.FC<ProductFormProps> = ({ initialData }) => {
   const params = useParams();
   const router = useRouter();
 
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const title = initialData ? "Edit billboard" : "Create billboard";
-  const description = initialData ? "Edit a billboard" : "Add a billboard";
-  const toastMessage = initialData ? "Billboard update" : "Billboard created";
+  const title = initialData ? "Edit product" : "Create product";
+  const description = initialData ? "Edit a product" : "Add a product";
+  const toastMessage = initialData ? "Product update" : "Product created";
   const action = initialData ? "Save changes" : "Create";
 
-  const form = useForm<BillboardFormValues>({
+  const form = useForm<ProductFormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData || {
-      label: "",
-      imageUrl: "",
-    },
+    defaultValues: initialData
+      ? {
+          ...initialData,
+          price: parseFloat(String(initialData?.price)),
+        }
+      : {
+          name: "",
+          images: [],
+          price: 0,
+          categoryId: "",
+          colorId: "",
+          sizeId: "",
+          isFeatured: false,
+          isArchived: false,
+        },
   });
 
-  const onSubmit = async (data: BillboardFormValues) => {
+  const onSubmit = async (data: ProductFormValues) => {
     try {
       setLoading(true);
       if (initialData) {
@@ -125,16 +144,22 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
         >
           <FormField
             control={form.control}
-            name="imageUrl"
+            name="images"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Background Image</FormLabel>
+                <FormLabel>Images</FormLabel>
                 <FormControl>
                   <ImageUpload
-                    value={field.value ? [field.value] : []}
+                    value={field.value.map((image) => image.url)}
                     disabled={loading}
-                    onChange={(url) => field.onChange(url)}
-                    onRemove={() => field.onChange("")}
+                    onChange={(url) =>
+                      field.onChange([...field.value, { url }])
+                    }
+                    onRemove={(url) =>
+                      field.onChange([
+                        ...field.value.filter((current) => current.url !== url),
+                      ])
+                    }
                   />
                 </FormControl>
                 <FormMessage />
@@ -144,14 +169,32 @@ export const BillboardForm: React.FC<BillboardFormProps> = ({
           <div className="grid grid-cols-3 gap-8">
             <FormField
               control={form.control}
-              name="label"
+              name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Label</FormLabel>
+                  <FormLabel>Name</FormLabel>
                   <FormControl>
                     <Input
                       disabled={loading}
-                      placeholder="Billboard label"
+                      placeholder="Product Name"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="price"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Price</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      disabled={loading}
+                      placeholder="9.99"
                       {...field}
                     />
                   </FormControl>
