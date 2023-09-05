@@ -90,7 +90,6 @@ export async function POST(
   }
 }
 //============================================================================================================================================
-//Below will be another route to GET all the billboards:
 export async function GET(
   req: Request,
   { params }: { params: { storeId: string } }
