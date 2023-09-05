@@ -11,11 +11,11 @@ import { DataTable } from "@/components/ui/data-table";
 import { ProductColumn, columns } from "./columns";
 import { ApiList } from "@/components/ui/api-list";
 
-interface BillboardClientProps {
+interface ProductClientProps {
   data: ProductColumn[];
 }
 
-export const ProductClient: React.FC<BillboardClientProps> = ({ data }) => {
+export const ProductClient: React.FC<ProductClientProps> = ({ data }) => {
   const router = useRouter();
   const params = useParams();
 
